@@ -1,0 +1,52 @@
+* {
+  box-sizing: border-box; }
+
+body {
+  text-align: center; }
+
+form {
+  display: inline-block;
+  padding: 40px;
+  border: 1px solid #CACACA;
+  border-radius: 10px; }
+  form .input-field {
+    margin-bottom: 15px;
+    text-align: left; }
+    form .input-field label {
+      display: block; }
+    form .input-field.multiple {
+      display: flex; }
+    form .input-field input[type='text'],
+    form .input-field input[type='number'] {
+      height: 40px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #DADADA;
+      padding-left: 5px;
+      box-sizing: border-box;
+      font-size: 15px;
+      font-weight: 300; }
+    form .input-field input[type="text"] {
+      width: 100%; }
+  form .input-subfield.margin-lr {
+    margin: 0 10px; }
+  form .input-subfield label {
+    text-align: center; }
+  form .input-subfield input[type='number']:-webkit-inner-spin-button,
+  form .input-subfield input[type='number']:-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; }
+  form .input-subfield input[type="number"] {
+    -moz-appearance: textfield;
+    width: 80px; }
+  form .inline label {
+    display: initial; }
+  form input[type="submit"] {
+    border: 0px;
+    padding: 10px 30px;
+    background-color: teal;
+    color: #fff;
+    font-size: 13px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    cursor: pointer; }

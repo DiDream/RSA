@@ -1,9 +1,31 @@
 doctype
-html(lang='en')
+html(lang='es')
     head
         meta(charset='utf-8')
-        title encriptación RSA
+        title Encriptación RSA
+        link(rel="stylesheet", href="css/styles.css", attr)
     body
-        h1 Encriptación RSA
-        script( src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js")
+        header
+            h1 Encriptación RSA
+        form(action="#" method="method")
+            
+            .input-field.multiple
+                .input-subfield
+                    label p
+                    input(type="number" name="p")
+                .input-subfield.margin-lr
+                    label q
+                    input(type="number" name="q")
+                .input-subfield
+                    label d
+                    input(type="number" name="d")
+            .input-field
+                label Mensaje
+                input(type="text" placeholder="Inserta tu mensaje" name="message")
+            .input-field.inline
+                input(type="checkbox" name="encrypt")
+                label Encriptar
+            .submit
+                input(type="submit" value="Operar")
+        //script( src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js")
         script(src="js/main.js")

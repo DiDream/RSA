@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>encriptación RSA</title>
+    <title>Encriptación RSA</title>
+    <link rel="stylesheet" href="css/styles.css" attr>
   </head>
   <body>
-    <h1>Encriptación RSA</h1>
-    <script src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js"></script>
+    <header>
+      <h1>Encriptación RSA</h1>
+    </header>
+    <form action="#" method="method">
+      <div class="input-field multiple">
+        <div class="input-subfield">
+          <label>p</label>
+          <input type="number" name="p">
+        </div>
+        <div class="input-subfield margin-lr">
+          <label>q</label>
+          <input type="number" name="q">
+        </div>
+        <div class="input-subfield">
+          <label>d</label>
+          <input type="number" name="d">
+        </div>
+      </div>
+      <div class="input-field">
+        <label>Mensaje</label>
+        <input type="text" placeholder="Inserta tu mensaje" name="message">
+      </div>
+      <div class="input-field inline">
+        <input type="checkbox" name="encrypt">
+        <label>Encriptar</label>
+      </div>
+      <div class="submit">
+        <input type="submit" value="Operar">
+      </div>
+    </form>
+    <!--script( src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js")-->
     <script src="js/main.js"></script>
   </body>
 </html>
