@@ -55,7 +55,7 @@ function euclidesExtendido(num1,num2){
     return {
         logs: l,
         mcd: l[i].x,
-        inv: l[i-1].z
+        inv: (l[i-1].z + a) % a
     }
 }
 Number.prototype.isCoprimeOf = function(b){
