@@ -2,35 +2,37 @@
 <html lang="es">
   <head>
     <meta charset="utf-8">
-    <title>Encriptación RSA</title>
+    <title>Cifrado RSA</title>
     <link rel="stylesheet" href="css/styles.css" attr>
   </head>
   <body>
     <header>
-      <h1>Encriptación RSA</h1>
+      <h1>Cifrado RSA</h1>
     </header>
-    <form action="#" method="method">
+    <form action="#" method="method" onsubmit="submitted(event, this)">
       <div class="input-field multiple">
         <div class="input-subfield">
-          <label>p</label>
-          <input type="number" name="p">
+          <label for="p">p</label>
+          <input type="number" name="p" id="p" required="true" placeholder="421">
         </div>
         <div class="input-subfield margin-lr">
-          <label>q</label>
-          <input type="number" name="q">
+          <label for="q">q</label>
+          <input type="number" name="q" id="q" required="true" placeholder="7">
         </div>
         <div class="input-subfield">
-          <label>d</label>
-          <input type="number" name="d">
+          <label for="d">d</label>
+          <input type="number" name="d" id="d" required="true" placeholder="1619">
         </div>
       </div>
       <div class="input-field">
-        <label>Mensaje</label>
-        <input type="text" placeholder="Inserta tu mensaje" name="message">
+        <label for="message">Mensaje</label>
+        <input type="text" placeholder="Inserta tu mensaje" name="message" id="message" required="true">
       </div>
       <div class="input-field inline">
-        <input type="checkbox" name="encrypt">
-        <label>Encriptar</label>
+        <input type="radio" name="encrypt" id="encrypt" checked required>
+        <label for="encrypt">Cifrar</label>
+        <input type="radio" name="encrypt" id="decrypt">
+        <label for="decrypt">Descifrar</label>
       </div>
       <div class="submit">
         <input type="submit" value="Operar">

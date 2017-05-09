@@ -1,5 +1,6 @@
 'use strict'
-var ALFABETO = {'A': 1, 'B': 2, 'C': 3, 'D': 4, 'E': 5, 'F': 6, 'G': 7, 'H': 8, 'I': 9, 'J': 10, 'K': 11, 'L': 12, 'M': 13, 'N': 14, 'O': 15, 'P': 16, 'Q': 17, 'R': 18, 'S': 19, 'T': 20, 'U': 21, 'V': 22, 'W': 23, 'X':24 , 'Y':25 , 'Z': 26};
+var ALFABETO = {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 4, 'F': 5, 'G': 6, 'H': 7, 'I': 8, 'J': 9, 'K': 10, 'L': 11, 'M': 12, 'N': 13, 'O': 14, 'P': 15, 'Q': 16, 'R': 17, 'S': 18, 'T': 19, 'U': 20, 'V': 21, 'W': 22, 'X':23 , 'Y':24 , 'Z': 25};
+var ALFABETO_LENGTH = Object.keys(ALFABETO).length;
 
 var PRIME_NUMBERS = [2,3,5,7,11,13,17,19,23];
 var N = 100;
@@ -60,8 +61,12 @@ function euclidesExtendido(num1,num2){
     }
 }
 Number.prototype.isCoprimeOf = function(b){
-    return euclides(this,b) == 1;
+    return euclidesExtendido(this,b).mcd == 1;
 }
+String.prototype.isCoprimeOf = function(b){
+    return euclidesExtendido( this.toNumber() ,b).mcd == 1;
+}
+
 Number.prototype.euclidesExt = function(b){
     return euclidesExtendido(this,b);
 }
@@ -71,6 +76,9 @@ Number.prototype.coprimeNumbers = function() {
         if(this.isCoprimeOf(i)) coprimes.push(i);
     }
     return coprimes;
+}
+String.prototype.isPrime = function(){
+    return Number(this).isPrime();
 }
 Number.prototype.isPrime = function(){
     if(this===1) return true;
@@ -101,34 +109,109 @@ Number.prototype.isPrime = function(){
     // maybe == true si ha habido algun r == this-1 (-1)
     // maybe == false si todos todos los r's han sido UNOS
 }
+
+function submitted(e, form){
+    e.preventDefault();
+    var p = form.p.value.toNumber() , q =form.q.value.toNumber(), d=form.d.value.toNumber();
+    if (!p.isPrime() || !q.isPrime()) {
+        alert("Inserte numero primos para p y q");
+        return false;
+    }
+    var phi_n = (p-1)*(q-1);
+    if(!d.isCoprimeOf(phi_n)){
+        alert('d debe ser coprimo de '+ phi_n);
+        return false;
+    }
+    var encrypt = form.encrypt[0].checked;
+    var message = form.message.value;
+    message = encrypt?
+                    message.split(' ').join('').toUpperCase(): //mas rapido que replace(/\s/g, '')
+                    message.split(',').map(Number);
+    console.log(message);
+    RSA({
+        p,q,d,
+        message,
+        encrypt,
+        phi_n
+    })
+}
+
+function isPrime(input){
+    if( !(input instanceof HTMLInputElement) ){
+        throw "Tipo de dato no permitido";
+    }
+    if( input.value.isPrime() ){
+        input.setCustomValidity('');
+
+    }else {
+        input.setCustomValidity('Inserta un numero primo');
+    }
+}
 function logBase(base,arg){
     return Math.log(arg)/ Math.log(base);
 }
 function blockSize(n){
-
     //log(base=b, arg = n) = (j-1)
-    return Math.floor(logBase(ALFABETO.length, n) );
+    return Math.floor(logBase(ALFABETO_LENGTH, n) );
 }
-function RSA(p=61,q=53,d=2753){
-    //Trabajando con numero muy grandes
-    // Libreria BigInteger
-    /*
-    p = bigInt(p);
-    q = bigInt(q);
-    d = bigInt(d);
-    var n = p.multiply(q);
-    var phi_n = p.minus(1).multiply( q.minus(1));
-
-    //var phi_n =(p-1)*(q-1);
-
-    //var e = phi_n.value.euclidesExt(d.value).inv;
-    console.log(n,phi_n,d);
-
-    */
-    
-    var n=p*q;
-    var phi_n =(p-1)*(q-1);
+function RSA(values){
+    var {p,q,d,message,encrypt,phi_n} = values;
+    var n =  p*q;
     var e = phi_n.euclidesExt(d).inv;
-    console.log(n,phi_n,d,e);
+    var ij = blockSize(n); //tamaño del bloque
+    console.log('n', n, 'phi', phi_n, 'd',d,'e',e, 'message', message,'block', ij);
+    if(encrypt) {
+        var messageBlocks = [];
+        var a = message.length % ij;
+        var limit = message.length-a;
+        for(var i=0; i< limit; i+=ij){
+            messageBlocks.push(message.substring(i,i+ij));
+        }
+
+        if(a>0) messageBlocks.push(message.substring(limit));
+
+        console.log(messageBlocks);
+        // Cifrar
+        var codedMessage = [];
+        var encryptedMessage = [];
+        messageBlocks.forEach(function(m){
+
+            var cod =0;
+            var exp = ij-1;
+
+            for(var i=0; i<m.length; i++){
+                cod += ALFABETO[ m[i] ] * (ALFABETO_LENGTH** (exp-i) );
+            }
+            codedMessage.push(cod);
+            encryptedMessage.push( fastExponentiation(cod,e,n) );
+        })
+
+        // var a = message.length % ij;
+        // var limit = message.length-a;
+        // var cod;
+        // for(var i=0; i<limit; i+= ij){
+        //     cod = 0;
+        //     for(var j=0; j<ij; j++){
+        //
+        //         cod += ALFABETO[ message[i+j] ] * (ALFABETO_LENGTH ** (ij-1-j));
+        //
+        //     }
+        //     codedMessage.push(cod);
+        //     encryptedMessage.push( fastExponentiation(cod,e,n) );
+        // }
+        // cod=0;
+        // for(var i=0; i<a; i++){
+        //     cod += ALFABETO[ message[limit+i] ] * (ALFABETO_LENGTH ** (ij-1-i) )
+        // }
+        console.log(codedMessage, encryptedMessage);
+
+    }else {
+        var decryptMessage = [];
+        message.forEach(function(c){
+            console.log(typeof c, c);
+            decryptMessage.push( fastExponentiation(c,d,n) );
+        });
+        console.log(message,decryptMessage);
+    }
 
 }

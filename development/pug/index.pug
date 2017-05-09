@@ -2,29 +2,31 @@ doctype
 html(lang='es')
     head
         meta(charset='utf-8')
-        title Encriptación RSA
+        title Cifrado RSA
         link(rel="stylesheet", href="css/styles.css", attr)
     body
         header
-            h1 Encriptación RSA
-        form(action="#" method="method")
+            h1 Cifrado RSA
+        form(action="#" method="method" onsubmit="submitted(event, this)")
             
             .input-field.multiple
                 .input-subfield
-                    label p
-                    input(type="number" name="p")
+                    label(for="p") p
+                    input(type="number" name="p" id="p" required="true" placeholder="421")
                 .input-subfield.margin-lr
-                    label q
-                    input(type="number" name="q")
+                    label(for="q") q
+                    input(type="number" name="q" id="q" required="true" placeholder="7")
                 .input-subfield
-                    label d
-                    input(type="number" name="d")
+                    label(for="d") d
+                    input(type="number" name="d" id="d" required="true" placeholder="1619")
             .input-field
-                label Mensaje
-                input(type="text" placeholder="Inserta tu mensaje" name="message")
+                label(for="message") Mensaje
+                input(type="text" placeholder="Inserta tu mensaje" name="message" id="message" required="true")
             .input-field.inline
-                input(type="checkbox" name="encrypt")
-                label Encriptar
+                input(type="radio" name="encrypt" id="encrypt" checked required)
+                label(for="encrypt") Cifrar
+                input(type="radio" name="encrypt" id="decrypt")
+                label(for="decrypt") Descifrar
             .submit
                 input(type="submit" value="Operar")
         //script( src="http://peterolson.github.com/BigInteger.js/BigInteger.min.js")
