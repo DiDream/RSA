@@ -127,7 +127,6 @@ function submitted(e, form){
     message = encrypt?
                     message.split(' ').join('').toUpperCase(): //mas rapido que replace(/\s/g, '')
                     message.split(',').map(Number);
-    console.log(message);
     RSA({
         p,q,d,
         message,
@@ -159,7 +158,8 @@ function RSA(values){
     var n =  p*q;
     var e = phi_n.euclidesExt(d).inv;
     var ij = blockSize(n); //tamaño del bloque
-    console.log('n', n, 'phi', phi_n, 'd',d,'e',e, 'message', message,'block', ij);
+    console.log('Mensaje insertado:', message);
+    console.log('n:', n, 'phi_n:', phi_n, 'd:',d,'e:',e, 'block:', ij);
     if(encrypt) {
         var messageBlocks = [];
         var a = message.length % ij;
@@ -170,7 +170,7 @@ function RSA(values){
 
         if(a>0) messageBlocks.push(message.substring(limit));
 
-        console.log(messageBlocks);
+        console.log('Mensaje insertado en bloques:',messageBlocks);
         // Cifrar
         var codedMessage = [];
         var encryptedMessage = [];
@@ -203,15 +203,16 @@ function RSA(values){
         // for(var i=0; i<a; i++){
         //     cod += ALFABETO[ message[limit+i] ] * (ALFABETO_LENGTH ** (ij-1-i) )
         // }
-        console.log(codedMessage, encryptedMessage);
+        console.log('Mensaje codificado:', codedMessage)
+        console.log('Mensaje cifrado:', encryptedMessage);
 
     }else {
         var decryptMessage = [];
         message.forEach(function(c){
-            console.log(typeof c, c);
             decryptMessage.push( fastExponentiation(c,d,n) );
         });
-        console.log(message,decryptMessage);
+        console.log('Mensaje insertado codificado:', message);
+        console.log('Mensaje descifrado codificado:', decryptMessage);
     }
 
 }
